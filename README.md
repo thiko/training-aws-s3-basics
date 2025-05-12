@@ -226,6 +226,7 @@ Learn how to grant temporary access to private S3 objects using pre-signed URLs 
          }
       }
      ```
+   - You can copy the dependencies from: https://github.com/thiko/training-aws-s3-presigned-url
    - Run the script or use the AWS CLI to generate an upload URL
    - Test the upload with a REST client like Postman or curl
    ```sh
