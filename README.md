@@ -188,29 +188,43 @@ Learn how to grant temporary access to private S3 objects using pre-signed URLs 
    > **Understanding CORS**: Cross-Origin Resource Sharing (CORS) is a security feature implemented by browsers that restricts web pages from making requests to a different domain than the one that served the original page. By configuring CORS on your S3 bucket, you're allowing specified origins (websites) to load resources from your bucket. This is essential when you want to host assets like images, fonts, or scripts on S3 that will be used by web applications hosted on different domains.
 
 5. **Create a pre-signed URL for upload**
-   - Create a simple Python script `generate_upload_url.py`:
-     ```python
-     import boto3
-     from botocore.config import Config
-     
-     # Configure your region
-     my_config = Config(region_name='eu-central-1')
-     
-     # Create an S3 client
-     s3_client = boto3.client('s3', config=my_config)
-     
-     # Generate a pre-signed URL for upload (PUT)
-     presigned_url = s3_client.generate_presigned_url(
-         'put_object',
-         Params={
-             'Bucket': 'private-training-[YourName]-[Date]',
-             'Key': 'uploaded-via-presigned-url.txt'
-         },
-         ExpiresIn=300
-     )
-     
-     print("Pre-signed upload URL (valid for 5 minutes):")
-     print(presigned_url)
+   - Create a simple Java application `GeneratePresignedUrlExample.java`:
+     ```java
+      public class GeneratePresignedUrlExample {
+
+         public static void main(String[] args) {
+
+            var preSignBuilder = S3Presigner.builder()
+                     .region(Region.EU_CENTRAL_1)
+                     .credentialsProvider(DefaultCredentialsProvider.create());
+            // optionally: use a ProfileCredentialsProvider to use profiles
+
+            try (var presigner = preSignBuilder.build()) {
+
+                  // Bucket und Key definieren
+                  String bucketName = "private-training-[YourName]-[Date]";
+                  String keyName = "uploaded-via-presigned-url.txt";
+
+                  PutObjectRequest objectRequest = PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(keyName)
+                        .build();
+
+                  // Generate Pre-signed URL for upload (PUT)
+                  // Expires in 5 Minutes
+                  PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+                        .signatureDuration(Duration.ofMinutes(5))
+                        .putObjectRequest(objectRequest)
+                        .build();
+
+                  var presignedUrl = presigner.presignPutObject(presignRequest).url().toString();
+
+                  System.out.printf("Pre-signed upload URL (valid for %d minutes): \n", presignRequest.signatureDuration().toMinutes());
+                  System.out.println(presignedUrl);
+
+            }
+         }
+      }
      ```
    - Run the script or use the AWS CLI to generate an upload URL
    - Test the upload with a REST client like Postman or curl
