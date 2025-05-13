@@ -131,7 +131,7 @@ Learn how to configure versioning, different storage classes, and lifecycle poli
    - Configure the following actions:
      - After 30 days: Transition to S3 Standard-IA
      - After 90 days: Transition to S3 Glacier
-     - After 365 days: Permanently delete
+     - After 365 days: Expire current versions of objects AND Permanently delete noncurrent versions of objects
    - Additionally enable "Delete expired object delete markers"
    - Create the rule
 
