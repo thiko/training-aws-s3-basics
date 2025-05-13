@@ -43,6 +43,7 @@ Learn how to create an Amazon S3 bucket and perform basic configurations.
    - Also upload an image of your choice
 
 4. **Adjust bucket policy**
+   - Disable "Block all public access" in the bucket properties and confirm
    - Go to the "Permissions" tab
    - Click on "Bucket policy"
    - Insert the following policy (replace `[YourBucketName]` with your actual bucket name):
@@ -61,8 +62,7 @@ Learn how to create an Amazon S3 bucket and perform basic configurations.
      }
      ```
    - Save the policy
-   - Disable "Block all public access" in the bucket properties and confirm
-
+   
    > **NOTE**: Making S3 buckets publicly accessible as demonstrated in this exercise is NOT recommended for production environments. In real-world scenarios, you should use Amazon CloudFront with an Origin Access Identity (OAI) to securely serve content from S3 without making the bucket publicly accessible.
 
 5. **Check the website**
